@@ -3,9 +3,14 @@ require "rspec"
 require "geocoder"
 require "nokogiri"
 require "open-uri"
+require "json/ld"
 
 require "weather_usa/version"
 require "weather_usa/cli"
+require "weather_usa/scraper"
+require "weather_usa/weather"
+require "weather_usa/geocode"
+
 
 
 
