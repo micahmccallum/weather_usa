@@ -9,6 +9,7 @@ class WeatherUsa::CLI
   end
 
   def new_location
+    Weather.clear_all
     self.ask_for_new_location
     @input = gets.strip
     self.get_weather_information
