@@ -36,19 +36,22 @@ class WeatherUsa::CLI
     puts
     puts "    1) See a detailed forecast for the current location.".blue
     puts
-    puts "    2) Choose a different location.".blue
+    puts "    2) See an extended forecast.".blue
     puts
-    puts "    3) Exit the program.".blue
+    puts "    3) Choose a different location.".blue
     puts
-    puts
+    puts "    4) Exit the program.".blue
     option = gets.strip.to_s
     case option
     when "1"
       self.display_detailed_forecast
-      self.options      
-    when "2"      
+      self.options
+    when "2"
+      self.display_extended_forecast
+      self.options
+    when "3"      
       self.new_location
-    when "3"
+    when "4"
       puts
       puts
       puts "  Thank you for using Weather USA.".blue
@@ -66,16 +69,32 @@ class WeatherUsa::CLI
     puts "  #{current.name} for your selected location, ".blue + "#{@location.name}".red + ",".blue
     puts "      the current temperature is ".blue + "#{current.temperature}".red + ",".blue
     puts "      the current wind speed is ".blue + "#{current.wind_speed}".red + " from the ".blue + "#{current.wind_direction}".red + ".".blue
-    puts "      Expected conditions: ".blue + "#{current.short_forecast}".red
+    puts "      Expected conditions: ".blue + "#{current.short_forecast}.".red
 
   end
 
-  def display_detailed_forecast
+  def display_detailed_forecast 
+    detailed_forecast = current_conditions.detailed_forecast.split(".")
     puts
     puts
-    puts "    #{current_conditions.detailed_forecast}".red
+    detailed_forecast.each do |line|
+      puts "    #{line}.".red
+    end
     puts
     puts
+  end
+
+  def display_extended_forecast
+    extended_forecast = Weather.all
+    puts
+    puts
+    extended_forecast.each do |period|
+      period.name.include?("ight") ? am_pm = "Low" : am_pm = "High"
+      puts
+      puts "    #{period.name}".red
+      puts "        #{period.short_forecast}".red
+      puts "        #{am_pm} temperature: ".blue + "#{period.temperature}".red      
+    end
   end
 
   def get_weather_information
@@ -85,7 +104,7 @@ class WeatherUsa::CLI
   end
 
   def get_location
-    @location = Geocode.new(@input)
+    @location = Geocode.get_geocode(@input)
   end 
 
   def scrape_weather_site
