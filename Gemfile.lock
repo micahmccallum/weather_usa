@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     weather_usa (0.1.0)
+      colorize
       geocoder (~> 1.6.0)
       json-ld
       nokogiri
@@ -10,6 +11,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     coderay (1.1.2)
+    colorize (0.8.1)
     concurrent-ruby (1.1.6)
     diff-lcs (1.3)
     geocoder (1.6.3)

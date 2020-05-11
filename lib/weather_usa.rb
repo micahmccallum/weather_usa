@@ -4,6 +4,7 @@ require "geocoder"
 require "nokogiri"
 require "open-uri"
 require "json/ld"
+require "colorize"
 
 require "weather_usa/version"
 require "weather_usa/cli"
