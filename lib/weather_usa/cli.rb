@@ -10,9 +10,9 @@ class WeatherUsa::CLI
   def menu
     self.greeting
     initial_location = gets.strip
-    location = self.get_geocode(initial_location)
-    @weather = Weather.new(Scraper.scrape_weather_dot_gov(BASE_PATH, location.latitude, location.longitude))
-    binding.pry
+    @location = self.get_geocode(initial_location)
+    @weather = self.get_weather
+    
 
   
   end
@@ -27,8 +27,8 @@ class WeatherUsa::CLI
     Geocode.new(location)
   end
 
-  def get_weather
-    Weather.new(Scraper.new(BASE_PATH))    
+  def get_weather    
+    Weather.new(Scraper.scrape_weather_dot_gov(BASE_PATH, @location.latitude, @location.longitude)) 
   end
 
 
@@ -40,3 +40,4 @@ class WeatherUsa::CLI
     
   
 end
+
