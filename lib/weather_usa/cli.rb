@@ -8,13 +8,12 @@ class WeatherUsa::CLI
   end
 
   def menu
-    self.greeting
-    initial_location = gets.strip
-    @location = self.get_geocode(initial_location)
-    @weather = self.get_weather
-    
 
-  
+    self.greeting
+    @input = gets.strip
+    self.get_weather_information
+    
+    binding.pry  
   end
 
   def greeting
@@ -23,13 +22,27 @@ class WeatherUsa::CLI
     puts "(This can be a zip code or a city and state)"
   end
 
-  def get_geocode(location)
-    Geocode.new(location)
+  def get_weather_information
+    self.get_location
+    self.scrape_weather_site
+    self.create_weather_objects_from_array        
   end
 
-  def get_weather    
-    Weather.new(Scraper.scrape_weather_dot_gov(BASE_PATH, @location.latitude, @location.longitude)) 
+  def get_location
+    @location = Geocode.new(@input)
+  end 
+
+  def scrape_weather_site
+    @weather_array = Scraper.scrape_weather_dot_gov(BASE_PATH, @location)
   end
+
+  def create_weather_objects_from_array    
+    @weather_array.each do |period|
+      Weather.new(period)
+    end 
+  end
+
+
 
 
 

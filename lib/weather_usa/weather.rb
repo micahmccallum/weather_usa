@@ -1,12 +1,23 @@
 class Weather
-  attr_accessor :location, :current_temp, :forecast
+  attr_accessor :number, :name, :temperature, :wind_speed, :wind_direction,
+                 :short_forecast, :detailed_forecast
 
-  def initialize(weather)
-    binding.pry
-    attribute_hash.each do |attribute|
-      self.send "#{k}=", v      
-    end
-    self
+  @@all = []
+
+  def initialize(weather_hash)
+    weather_hash.each do |k, v|
+      self.send "#{k}=", v         
+    end    
+    @@all << self
   end
 
+  def self.all
+    @@all
+  end
+
+  def self.clear_all
+    @@all = []
+  end
+
+  
 end

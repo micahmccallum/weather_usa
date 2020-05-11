@@ -1,13 +1,13 @@
 
 class Scraper
-  # URL = "https://api.weather.gov/points/"
-
-  def self.scrape_weather_dot_gov(url, latitude, longitude)
-    weather_array = []
-    doc = Scraper::get_doc(url + "#{latitude},#{longitude}/forecast")
-    periods = doc["properties"]["periods"]
+  
+  def self.scrape_weather_dot_gov(url, location)
     
+    doc = Scraper::get_doc(url + "#{location.latitude},#{location.longitude}/forecast")
+    periods = doc["properties"]["periods"]
+    weather_array = []
     periods.each do |period|
+
       weather = {}
       weather[:number] = period["number"]
       weather[:name] = period["name"]
@@ -18,7 +18,7 @@ class Scraper
       weather[:detailed_forecast] = period["detailedForecast"] 
       
       weather_array << weather    
-    end    
+    end 
     weather_array
   end
 
