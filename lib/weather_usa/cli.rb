@@ -1,6 +1,6 @@
 class WeatherUsa::CLI
 
-  BASE_PATH = "https://api.weather.gov/points/"
+  BASE_PATH = "https://api.weather.gov/"
   
   def call
     self.greeting
@@ -55,7 +55,7 @@ class WeatherUsa::CLI
     when "4"
       puts
       puts
-      puts "  Thank you for using Weather USA.".blue
+      puts "  *** Thank you for using Weather USA. ***".blue
       puts
       puts
       exit
@@ -67,10 +67,10 @@ class WeatherUsa::CLI
   def display_current_conditions
     current = self.current_conditions
     puts ""
-    puts "  #{current.name} for your selected location, ".blue + "#{@location.name}".red + ",".blue
-    puts "      the current temperature is ".blue + "#{current.temperature}".red + ",".blue
-    puts "      the current wind speed is ".blue + "#{current.wind_speed}".red + " from the ".blue + "#{current.wind_direction}".red + ".".blue
-    puts "      Expected conditions: ".blue + "#{current.short_forecast}.".red
+    puts "  #{current.name} for your selected location, ".blue + "#{@location.name}".green + ",".blue
+    puts "      the current temperature is ".blue + "#{current.temperature}".green + ",".blue
+    puts "      the current wind speed is ".blue + "#{current.wind_speed}".green + " from the ".blue + "#{current.wind_direction}".green + ".".blue
+    puts "      Expected conditions: ".blue + "#{current.short_forecast}.".green
 
   end
 
@@ -79,7 +79,7 @@ class WeatherUsa::CLI
     puts
     puts
     detailed_forecast.each do |line|
-      puts "    #{line}.".red
+      puts "    #{line}.".green
     end
     puts
     puts
@@ -92,9 +92,9 @@ class WeatherUsa::CLI
     extended_forecast.each do |period|
       period.name.include?("ight") ? am_pm = "Low" : am_pm = "High"
       puts
-      puts "    #{period.name}".red
-      puts "        #{period.short_forecast}".red
-      puts "        #{am_pm} temperature: ".blue + "#{period.temperature}".red      
+      puts "    #{period.name}".green
+      puts "        #{period.short_forecast}".green
+      puts "        #{am_pm} temperature: ".blue + "#{period.temperature}".green      
     end
   end
 
@@ -120,16 +120,7 @@ class WeatherUsa::CLI
 
   def current_conditions
     Weather.all[0]
-  end
-
-
-
-
-
- 
-
-  
-    
+  end    
   
 end
 
