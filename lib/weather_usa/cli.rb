@@ -10,24 +10,26 @@ class WeatherUsa::CLI
 
   def new_location
     Weather.clear_all
-    self.ask_for_new_location
+    self.ask_for_new_location    
     @input = gets.strip
     self.get_weather_information
     self.display_current_conditions
+    self.display_alert
     self.options    
   end
 
   def greeting
     puts
     puts 
-    puts "                Welcome to Weather USA!".blue    
+    puts "        *** Welcome to Weather USA! ***".blue    
   end
 
-  def ask_for_new_location       
+  def ask_for_new_location 
+    puts     
     puts "  Please enter a geographic location in the United States.".blue
     puts "      (This can be a zip code or a city and state)".blue
     puts
-    puts    
+    print "    >>  ".green  
   end
 
   def options
@@ -35,13 +37,15 @@ class WeatherUsa::CLI
     puts
     puts "    What would you like to do? (Please select an option.)".blue
     puts
-    puts "    1) See a detailed forecast for the current location.".blue
+    puts "        1) See a detailed forecast for the current location.".blue
     puts
-    puts "    2) See an extended forecast.".blue
+    puts "        2) See an extended forecast.".blue
     puts
-    puts "    3) Choose a different location.".blue
+    puts "        3) Choose a different location.".blue
     puts
-    puts "    4) Exit the program.".blue
+    puts "        4) Exit the program.".blue
+    puts
+    print "    >>  ".green
     option = gets.strip.to_s
     case option
     when "1"
@@ -66,19 +70,35 @@ class WeatherUsa::CLI
 
   def display_current_conditions
     current = self.current_conditions
-    puts ""
-    puts "  #{current.name} for your selected location, ".blue + "#{@location.name}".green + ",".blue
-    puts "      the current temperature is ".blue + "#{current.temperature}".green + ",".blue
-    puts "      the current wind speed is ".blue + "#{current.wind_speed}".green + " from the ".blue + "#{current.wind_direction}".green + ".".blue
-    puts "      Expected conditions: ".blue + "#{current.short_forecast}.".green
-
+    puts 
+    puts "    #{current.name} for your selected location, ".blue + "#{@location.name}".green + ",".blue
+    puts "        the current temperature is ".blue + "#{current.temperature}".green + ",".blue
+    puts "        the current wind speed is ".blue + "#{current.wind_speed}".green + " from the ".blue + "#{current.wind_direction}".green + ".".blue
+    puts "        Expected conditions: ".blue + "#{current.short_forecast}.".green
   end
 
-  def display_detailed_forecast 
-    detailed_forecast = current_conditions.detailed_forecast.split(".")
+  def display_alert
+    if current_conditions.alert.count > 0
+      puts
+      puts "    Current alert:  ".red + "#{current_conditions.alert[:headline]}.".yellow
+      puts
+      puts "    Do you want to see a detailed description of the alert? (y/n)".blue
+      puts
+      print "    >>  ".green
+      input = gets.strip.downcase
+      if input == "y"
+        current_conditions.alert[:description].split("\n").each do |line|
+          puts "    #{line}".yellow
+        end
+        puts
+      end
+    end    
+  end
+
+  def display_detailed_forecast    
     puts
     puts
-    detailed_forecast.each do |line|
+    current_conditions.detailed_forecast.split(".").each do |line|
       puts "    #{line}.".green
     end
     puts
@@ -87,10 +107,8 @@ class WeatherUsa::CLI
 
   def display_extended_forecast
     extended_forecast = Weather.all
-    puts
-    puts
     extended_forecast.each do |period|
-      period.name.include?("ight") ? am_pm = "Low" : am_pm = "High"
+      period.is_daytime ? am_pm = "High" : am_pm = "Low"
       puts
       puts "    #{period.name}".green
       puts "        #{period.short_forecast}".green

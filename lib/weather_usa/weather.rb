@@ -1,6 +1,6 @@
 class Weather
   attr_accessor :number, :name, :temperature, :wind_speed, :wind_direction,
-                 :short_forecast, :detailed_forecast, :alert
+                 :short_forecast, :detailed_forecast, :alert, :is_daytime
 
   @@all = []
 
@@ -18,6 +18,5 @@ class Weather
   def self.clear_all
     @@all = []
   end
-
   
 end

@@ -12,14 +12,11 @@ class Scraper
     alert_url  = url + "alerts/active/zone/#{zone}"
     alerts = Scraper::get_doc(alert_url)
     if alerts["features"].count > 0
-      alerts["features"].each do |feature|
-        alert[:headline] = feature["properties"]["headline"]
-        alert[:description] = feature["properties"]["description"]
-      end
+      alert[:headline] = alerts["features"][0]["properties"]["headline"]
+      alert[:description] = alerts["features"][0]["properties"]["description"]
     end    
     forecast_doc = Scraper::get_doc(forecast_url)
-    periods = forecast_doc["properties"]["periods"]
-    
+    periods = forecast_doc["properties"]["periods"]    
     
     periods.each do |period|
       weather_period = {}
@@ -29,7 +26,8 @@ class Scraper
       weather_period[:wind_speed] = period["windSpeed"]
       weather_period[:wind_direction] = period["windDirection"]
       weather_period[:short_forecast] = period["shortForecast"]
-      weather_period[:detailed_forecast] = period["detailedForecast"]      
+      weather_period[:detailed_forecast] = period["detailedForecast"]
+      weather_period[:is_daytime] = period["isDaytime"]     
       weather_array << weather_period    
     end    
     weather_array[0][:alert] = alert
