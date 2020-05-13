@@ -1,6 +1,6 @@
 class Weather
   attr_accessor :number, :name, :temperature, :wind_speed, :wind_direction,
-                 :short_forecast, :detailed_forecast
+                 :short_forecast, :detailed_forecast, :alert
 
   @@all = []
 
