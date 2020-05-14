@@ -4,8 +4,7 @@ class WeatherUsa::CLI
   
   def call
     self.greeting
-    self.new_location
-    
+    self.new_location    
   end
 
   def new_location
@@ -86,6 +85,7 @@ class WeatherUsa::CLI
       puts
       print "    >>  ".green
       input = gets.strip.downcase
+      puts
       if input == "y"
         current_conditions.alert[:description].split("\n").each do |line|
           puts "    #{line}".yellow
