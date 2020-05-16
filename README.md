@@ -1,8 +1,7 @@
 # WeatherUsa
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/weather_usa`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+WeatherUsa is a gem that with a zip code or a city and state combination returns the weather information from the weather.gov API for the United States of America and displays the formatted information to the console. After the initial search, current conditions are shown, along with any weather alerts.  There are also options for seeing more detailed forecasts or searching for another location.  Try it out!
+Please note:  At times there are issues with the API servers' response and at this time I have not included any way to handle these.  This will be looked at in a future release.
 
 ## Installation
 
@@ -22,7 +21,7 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+After starting the program, just follow the onscreen menu; it is very self-guided.
 
 ## Development
 
