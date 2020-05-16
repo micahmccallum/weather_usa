@@ -56,30 +56,28 @@ class WeatherUsa::CLI
     when "3"      
       self.new_location
     when "4"
-      puts
-      puts
-      puts "  *** Thank you for using Weather USA. ***".blue
-      puts
-      puts
-      exit
+      self.goodbye
     else
       self.options
     end
-  end
+  end 
 
   def display_current_conditions
-    current = self.current_conditions
+    right_now = self.current_conditions
+    
     puts 
-    puts "    #{current.name} for your selected location, ".blue + "#{@location.name}".green + ",".blue
-    puts "        the current temperature is ".blue + "#{current.temperature}".green + ",".blue
-    puts "        the current wind speed is ".blue + "#{current.wind_speed}".green + " from the ".blue + "#{current.wind_direction}".green + ".".blue
-    puts "        Expected conditions: ".blue + "#{current.short_forecast}.".green
+    puts "    Weather forecast for ".blue + "#{@location.name}".green + ":".blue
+    puts "    Current observations for your selected location, ".blue + "#{right_now.current[:station_name]}".green + ",".blue
+    puts "        the current temperature is ".blue + "#{to_fahr(right_now.current[:temperature])}".green + ",".blue
+    puts "        the current wind speed is ".blue + "#{(right_now.current[:wind_speed]).round(0)} mph".green + " from the ".blue + 
+                  "#{wind_direction_from_degrees(right_now.current[:wind_direction])}".green + ".".blue
+    puts "        Expected conditions: ".blue + "#{right_now.short_forecast}.".green
   end
 
   def display_alert
-    if current_conditions.alert.count > 0
+    if current_conditions.current[:alert_headline]
       puts
-      puts "    Current alert:  ".red + "#{current_conditions.alert[:headline]}.".yellow
+      puts "    Current alert:  ".red + "#{current_conditions.current[:alert_headline]}.".yellow
       puts
       puts "    Do you want to see a detailed description of the alert? (y/n)".blue
       puts
@@ -87,7 +85,7 @@ class WeatherUsa::CLI
       input = gets.strip.downcase
       puts
       if input == "y"
-        current_conditions.alert[:description].split("\n").each do |line|
+        current_conditions.current[:alert_description].split("\n").each do |line|
           puts "    #{line}".yellow
         end
         puts
@@ -106,14 +104,22 @@ class WeatherUsa::CLI
   end
 
   def display_extended_forecast
-    extended_forecast = Weather.all
-    extended_forecast.each do |period|
+    Weather.all.each do |period|
       period.is_daytime ? am_pm = "High" : am_pm = "Low"
       puts
       puts "    #{period.name}".green
       puts "        #{period.short_forecast}".green
       puts "        #{am_pm} temperature: ".blue + "#{period.temperature}".green      
     end
+  end
+
+  def goodbye
+    puts
+    puts
+    puts "  *** Thank you for using Weather USA. ***".blue
+    puts
+    puts
+    exit
   end
 
   def get_weather_information
@@ -138,7 +144,36 @@ class WeatherUsa::CLI
 
   def current_conditions
     Weather.all[0]
-  end    
+  end
+
+  def to_fahr(number)
+    ((number * 9) / 5 + 32).round(0) 
+  end
+
+  def wind_direction_from_degrees(degrees)
+    case degrees    
+    when 0..22.5
+      "N"
+    when 22.6..67.5
+      "NE"
+    when 67.6..112.5
+      "E"
+    when 112.6..157.5
+      "SE"
+    when 157.6..202.5
+      "S"
+    when 202.6..247.5
+      "SW"
+    when 247.6..292.5
+      "W"
+    when 292.6..337.5
+      "NW"
+    when 337.6..360
+      "N"
+    else
+      "N/A"
+    end
+  end  
   
 end
 
