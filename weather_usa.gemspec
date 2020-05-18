@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.license       = "MIT"
   spec.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
 
-  spec.metadata["allowed_push_host"] = "TODO: Set to 'http://mygemserver.com'"
+  #spec.metadata["allowed_push_host"] = "TODO: Set to 'http://mygemserver.com'"
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = "https://github.com/micahmccallum/weather_usa.git"
@@ -28,9 +28,9 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_development_dependency "rspec", "~> 3.9.0"
-  spec.add_development_dependency "pry"
+  spec.add_development_dependency "pry", "~> 0.13.0"
 
   spec.add_dependency "geocoder", "~> 1.6.0"
-  spec.add_dependency "json-ld"
-  spec.add_dependency "colorize"
+  spec.add_dependency "json-ld", "~> 3.1.0"
+  spec.add_dependency "colorize", "~> 0.8.0"
 end
