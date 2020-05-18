@@ -44,7 +44,6 @@ class WeatherUsa::CLI
 
   def options
     puts
-    puts
     puts "    What would you like to do? (Please select an option.)".blue
     puts
     puts "        1) See a detailed forecast for the current location.".blue
@@ -76,11 +75,11 @@ class WeatherUsa::CLI
 
   def display_current_conditions
     right_now = self.current_conditions
-    right_now.current[:wind_speed] != nil ? wind_speed = right_now.current[:wind_speed].round(0) : wind_speed = "N/A"
-    puts 
+    right_now.current[:wind_speed] != nil ? wind_speed = meters_to_miles(right_now.current[:wind_speed]).round(0) : wind_speed = "N/A"
+    right_now.current[:temperature] != nil ? temperature = to_fahr(right_now.current[:temperature]) : temperature = "N/A"
     puts "    Weather forecast for ".blue + "#{@location.name}".green + ":".blue
     puts "    Current observations at: ".blue + "#{right_now.current[:station_name]}".green + ",".blue
-    puts "        the current temperature is ".blue + "#{to_fahr(right_now.current[:temperature])}".green + ",".blue
+    puts "        the current temperature is ".blue + "#{temperature}".green + ",".blue
     puts "        the current wind speed is ".blue + "#{wind_speed} mph".green + " from the ".blue + 
                   "#{wind_direction_from_degrees(right_now.current[:wind_direction])}".green + ".".blue
     puts "        Expected conditions: ".blue + "#{right_now.short_forecast}.".green
@@ -88,7 +87,6 @@ class WeatherUsa::CLI
 
   def display_alert
     if current_conditions.current[:alert_headline]
-      puts
       puts "    Current alert:  ".red + "#{current_conditions.current[:alert_headline]}.".yellow
       puts
       puts "    Do you want to see a detailed description of the alert? (y/n)".blue
@@ -110,25 +108,21 @@ class WeatherUsa::CLI
     puts
     puts
     puts "    Weather forecast for ".blue + "#{@location.name}".green + ":".blue
-    binding.pry
     current_conditions.detailed_forecast.split(".").each do |line|
       puts "    #{line}.".green
-    end
-    puts
-    puts
+    end    
   end
 
   def display_extended_forecast
-    Weather.all.each do |period|
+    Weather.all.each_with_index do |period, index|
       period.is_daytime ? am_pm = "High" : am_pm = "Low"
-      puts
-      puts "    #{period.name}".green
-      puts "        #{period.short_forecast}".green
-      puts "        #{am_pm} temperature: ".blue + "#{period.temperature}".green      
+      if index < 8
+        puts "    #{period.name}".green
+        puts "        #{period.short_forecast}".green
+        puts "        #{am_pm} temperature: ".blue + "#{period.temperature}".green
+      end   
     end
-  end
-
-  
+  end  
 
   def get_weather_information
     self.get_location
@@ -156,7 +150,11 @@ class WeatherUsa::CLI
 
   def to_fahr(number)
     ((number * 9) / 5 + 32).round(0) 
-  end 
+  end
+
+  def meters_to_miles(number)
+    (number * 2.23694).round(0)
+  end
 
   def wind_direction_from_degrees(degrees)
     case degrees    

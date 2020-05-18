@@ -1,7 +1,6 @@
 require "pry"
 require "rspec"
 require "geocoder"
-require "nokogiri"
 require "open-uri"
 require "json/ld"
 require "colorize"
