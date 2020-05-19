@@ -21,6 +21,12 @@ Or install it yourself as:
 
 ## Usage
 
+From the command-line just type
+
+    $ weather_usa
+
+to start the program.
+
 After starting the program, just follow the onscreen menu; it is very self-guided.
 
 ## Development
